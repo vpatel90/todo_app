@@ -54,7 +54,8 @@ class ToDoList
       display_todo
     elsif option.upcase == "C"
       input = get_input(Messages::COMPLETE)
-      complete_item(input)
+      completed = complete_item(input)
+      add_to_done(completed)
       display_todo
     elsif option.upcase == "S"
       @file.write_file(@todo_list)
@@ -81,7 +82,11 @@ class ToDoList
   end
 
   def complete_item(input)
+    @todo_list.slice(input-1)
+  end
 
+  def add_to_done(item)
+    @done_list.push(item)
   end
 end
 
