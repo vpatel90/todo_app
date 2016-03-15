@@ -17,4 +17,10 @@ class IOAdapter
     @output.puts msg
   end
 
+  def puts_list(arr)
+    arr.each do |item|
+      puts item
+    end
+  end
+
 end

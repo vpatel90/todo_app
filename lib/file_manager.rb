@@ -4,6 +4,7 @@ class FileManager
     csvobj = CSV.open(Messages::FILE)
     all_lists_in_file = csvobj.read
     @total_lists = 0
+    @saved_todo = []
 
   end
 

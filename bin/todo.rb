@@ -9,17 +9,15 @@ require 'CSV'
 
 class MainMenu
   def initialize
-    file = FileManager.new
+    @file = FileManager.new
     input = ConsoleInput.new
     output = ConsoleOutput.new
     @io = IOAdapter.new(input,output)
-    @application = ToDoList.new(file,io)
+    @application = ToDoList.new(@file,@io)
   end
 
   def menu
-    @io.puts "You have #{file.total_lists} lists"
-    @io.puts "(V)iew a list"
-    @io.puts "(C)reate a new list"
+    @io.puts_list ["You have #{@file.total_lists} lists", "(V)iew a list", "(C)reate a new list"]
     input = get_input(Messages::OPTIONS)
     evaluate(input)
   end
@@ -40,9 +38,9 @@ class MainMenu
       input = get_input(Messages::OPTIONS)
       evaluate(input)
     end
-    
+
   end
 end
 
 
-MainMenu.new
+MainMenu.new.menu
