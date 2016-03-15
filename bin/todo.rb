@@ -17,7 +17,8 @@ class MainMenu
   end
 
   def menu
-    @io.puts_list ["You have #{@file.total_lists} lists", "(V)iew a list", "(C)reate a new list"]
+    @io.puts_list ["You have #{@file.total_lists} lists", "(V)iew a list",
+                  "(C)reate a new list", "(E)xit"]
     input = get_input(Messages::OPTIONS)
     evaluate(input)
   end
@@ -28,17 +29,25 @@ class MainMenu
     @io.gets
   end
 
+
+
   def evaluate(input)
     case input.upcase
     when "V"
-
+      if @file.total_lists == 0
+        @io.puts "No lists available"
+      else
+        @appliation.list_titles
+      end
     when "C"
 
+    when "X"
+      exit
     else
       input = get_input(Messages::OPTIONS)
       evaluate(input)
     end
-
+    menu
   end
 end
 

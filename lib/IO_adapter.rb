@@ -23,4 +23,10 @@ class IOAdapter
     end
   end
 
+  def puts_list_with_num(arr)
+    arr.each_with_index do |item,index|
+      puts "#{index+1}. #{item}"
+    end
+  end
+
 end

@@ -1,11 +1,19 @@
 class FileManager
-  attr_accessor :saved_todo, :saved_complete, :total_lists
+  attr_accessor :saved_todo, :saved_complete, :total_lists, :titles
   def initialize
     csvobj = CSV.open(Messages::FILE)
     all_lists_in_file = csvobj.read
     @total_lists = 0
     @saved_todo = []
+    @titles = []
+    add_titles(all_lists_in_file)
+  end
 
+  def add_titles(lists)
+    lists.each do |item|
+      @total_lists += 1
+      @titles.push(item[0])
+    end
   end
 
   def get_lists(csv, all_lists_in_file)
