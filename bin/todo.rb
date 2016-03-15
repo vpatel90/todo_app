@@ -3,66 +3,25 @@ require_relative '../lib/io_adapter'
 require_relative '../lib/console_input'
 require_relative '../lib/console_output'
 require_relative '../lib/messages'
+require_relative '../lib/todo_list'
+require_relative '../lib/file_manager'
 require 'CSV'
 
-class FileManager
-  attr_accessor :saved_todo, :saved_complete, :user
+class MainMenu
   def initialize
-    csv = File.open(Messages::FILE, "r")
-    all_lists_in_file = []
-    get_lists(csv, all_lists_in_file)
-    @saved_todo = all_lists_in_file
-    #@user = user
+    file = FileManager.new
+    input = ConsoleInput.new
+    output = ConsoleOutput.new
+    @io = IOAdapter.new(input,output)
+    @application = ToDoList.new(file,io)
   end
 
-  def get_lists(csv, all_lists_in_file)
-    csv.each do |item|
-      if item != Messages::SPLITTER
-        all_lists_in_file.push(item)
-      end
-    end
-  end
-
-  def write_file(to_do_list)
-    csv = File.open(Messages::FILE, "w+")
-    to_do_list.each do |item|
-      item = item
-      csv << item
-    end
-    csv << "\n"
-    csv << Messages::SPLITTER
-  end
-end
-
-class ToDoList
-  def initialize(file, io)
-    @file = file
-    @io = io
-    @todo_list = @file.saved_todo.dup
-    @done_list = []
-  end
-
-  def menu(error = nil)
-    @io.puts "(A)dd item to list"
-    @io.puts "(C)omplete an item"
-    @io.puts "(S)ave"
-    @io.puts "(Q)uit"
-    option = get_input(Messages::OPTIONS)
-    if option.upcase == "A"
-      input = get_input(Messages::ADD)
-      add_item(input)
-      display_todo
-    elsif option.upcase == "C"
-      input = get_input(Messages::COMPLETE)
-      completed = complete_item(input)
-      add_to_done(completed)
-      display_todo
-    elsif option.upcase == "S"
-      @file.write_file(@todo_list)
-      exit
-    elsif option.upcase == 4
-      exit
-    end
+  def menu
+    @io.puts "You have #{file.total_lists} lists"
+    @io.puts "(V)iew a list"
+    @io.puts "(C)reate a new list"
+    input = get_input(Messages::OPTIONS)
+    evaluate(input)
   end
 
   def get_input(message)
@@ -71,27 +30,19 @@ class ToDoList
     @io.gets
   end
 
-  def display_todo
-    system`clear`
-    @todo_list.each_with_index{|item, index| @io.puts "#{index+1}. #{item}"}
-    menu
-  end
+  def evaluate(input)
+    case input.upcase
+    when "V"
 
-  def add_item(item)
-    @todo_list.push(item)
-  end
+    when "C"
 
-  def complete_item(input)
-    @todo_list.slice(input-1)
-  end
-
-  def add_to_done(item)
-    @done_list.push(item)
+    else
+      input = get_input(Messages::OPTIONS)
+      evaluate(input)
+    end
+    
   end
 end
 
-file = FileManager.new
-input = ConsoleInput.new
-output = ConsoleOutput.new
-io = IOAdapter.new(input,output)
-ToDoList.new(file,io).display_todo
+
+MainMenu.new
