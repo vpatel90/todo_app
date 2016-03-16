@@ -54,4 +54,5 @@ input = ConsoleInput.new
 output = ConsoleOutput.new
 io = IOAdapter.new(input,output)
 application = ToDoList.new(file,io)
+## Comment out below part for test!
 MainMenu.new(file,io,application).menu

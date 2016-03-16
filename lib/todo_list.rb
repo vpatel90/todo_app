@@ -75,7 +75,7 @@ class ToDoList
     length = @done_list.length if @done_list.length > @todo_list.length
     length.times do |index|
       @io.print "        #{index+1}. #{@todo_list[index]}".ljust(20," ") unless @todo_list[index].nil?
-      @io.print "#{index+1}. #{@done_list[index]}".rjust(40," ") unless @done_list[index].nil?
+      @io.print " "*30 + "#{index+1}. #{@done_list[index]}".ljust(20," ") unless @done_list[index].nil?
       puts
     end
     list_menu

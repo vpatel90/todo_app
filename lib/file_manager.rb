@@ -57,7 +57,7 @@ class FileManager
       csv << item + "\n"
     end
     if new_file == true
-      csv << arr.join(",") +"\n"
+      csv << arr#.join(",") +"\n"
     end
   end
 end
