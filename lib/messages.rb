@@ -6,6 +6,8 @@ module Messages
             Which item do you want to delete?"
   OPTIONS = "What would you like to do?"
   TITLEOPTIONS = "Which list would you like to see?"
+  TITLE = "What will be the title of this list?"
+  RETITLE = "Name Already Exists"
   SPLITTER = "&&&&&"
 
 end

@@ -1,7 +1,7 @@
 class FileManager
   attr_accessor :saved_todo, :saved_complete, :total_lists, :titles, :all_lists_in_file
   def initialize
-    csvobj = CSV.open(Messages::FILE)
+    csvobj = CSV.open(Messages::FILE,"a+")
     @all_lists_in_file = csvobj.read
     @total_lists = 0
     @saved_todo = []
@@ -45,6 +45,7 @@ class FileManager
   end
 
   def write_file(title,to_do_list,done_list)
+    new_file = true
     arr = []
     arr.push(title)
     arr = arr + to_do_list
@@ -54,9 +55,13 @@ class FileManager
     @all_lists_in_file.each do |item|
       if item[0] == arr[0]
         item = arr
+        new_file = false
       end
       item = item.join(",")
       csv << item + "\n"
+    end
+    if new_file == true
+      csv << arr.join(",") +"\n"
     end
   end
 end

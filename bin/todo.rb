@@ -29,8 +29,6 @@ class MainMenu
     @io.gets
   end
 
-
-
   def evaluate(input)
     case input.upcase
     when "V"
@@ -40,7 +38,7 @@ class MainMenu
         @application.list_titles
       end
     when "C"
-
+      @application.create_title
     when "E"
       exit
     else

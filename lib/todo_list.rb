@@ -56,6 +56,13 @@ class ToDoList
     @io.gets
   end
 
+  def create_title
+    input = get_input(Messages::TITLE)
+    input = get_input(Messages::RETITLE) if @file.titles.any? {|item| item == input}
+    @list_title = input
+    display_todo
+  end
+
   def display_todo
     puts`clear`
     @io.print @list_title.ljust(20," ")
