@@ -9,5 +9,13 @@ module Messages
   TITLE = "What will be the title of this list?"
   RETITLE = "Name Already Exists"
   SPLITTER = "&&&&&"
+  DIV = "-"
+
+  HEADER = ["",
+" /__  ___/            //    ) )              / /",
+"   / /   ___         //    / /  ___         / /        ( )  ___    __  ___",
+"  / /  //   ) )     //    / / //   ) )     / /        / / ((   ) )  / /",
+" / /  //   / /     //    / / //   / /     / /        / /   \\ \\     / /",
+"/ /  ((___/ /     //____/ / ((___/ /     / /____/ / / / //   ) )  / /      "]
 
 end

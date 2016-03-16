@@ -1,10 +1,9 @@
 class FileManager
-  attr_accessor :saved_todo, :saved_complete, :total_lists, :titles, :all_lists_in_file
+  attr_accessor :total_lists, :titles, :all_lists_in_file
   def initialize
     csvobj = CSV.open(Messages::FILE,"a+")
     @all_lists_in_file = csvobj.read
     @total_lists = 0
-    @saved_todo = []
     @titles = []
     add_titles(all_lists_in_file)
   end
@@ -36,21 +35,18 @@ class FileManager
     return done_list
   end
 
-  def get_lists(csv, all_lists_in_file)
-    csv.each do |item|
-      if item != Messages::SPLITTER
-        all_lists_in_file.push(item)
-      end
-    end
-  end
-
-  def write_file(title,to_do_list,done_list)
-    new_file = true
+  def make_arr(title,to_do_list,done_list)
     arr = []
     arr.push(title)
     arr = arr + to_do_list
     arr.push(Messages::SPLITTER)
     arr = arr + done_list
+    return arr
+  end
+
+  def write_file(title,to_do_list,done_list)
+    arr = make_arr(title,to_do_list,done_list)
+    new_file = true
     csv = File.open(Messages::FILE, "w+")
     @all_lists_in_file.each do |item|
       if item[0] == arr[0]

@@ -1,4 +1,5 @@
 class ToDoList
+  attr_accessor :todo_list, :done_list
   def initialize(file, io)
     @file = file
     @io = io
@@ -7,6 +8,7 @@ class ToDoList
   end
 
   def list_titles
+    @io.clear
     @io.puts_list_with_num(@file.titles)
     choice = get_input(Messages::TITLEOPTIONS)
     get_list(choice, @file.titles.length)
@@ -25,11 +27,9 @@ class ToDoList
   end
 
   def list_menu(error = nil)
-    @io.puts "(A)dd item to list"
-    @io.puts "(C)omplete an item"
-    @io.puts "(D)elete an item"
-    @io.puts "(S)ave"
-    @io.puts "(Q)uit"
+    list_options = ["(A)dd item to list","(C)omplete an item",
+                    "(D)elete an item","(S)ave","(Q)uit"]
+    @io.puts_list(list_options)
     option = get_input(Messages::OPTIONS)
     if option.upcase == "A"
       input = get_input(Messages::ADD)
@@ -56,24 +56,26 @@ class ToDoList
     @io.gets
   end
 
-  def create_title
-    input = get_input(Messages::TITLE)
-    input = get_input(Messages::RETITLE) if @file.titles.any? {|item| item == input}
+  def create_title(message)
+    @io.clear
+    input = get_input(message)
+    create_title(Messages::RETITLE) if @file.titles.any? {|item| item == input}
     @list_title = input
     display_todo
   end
 
   def display_todo
-    puts`clear`
-    @io.print @list_title.ljust(20," ")
-    @io.print "Completed".rjust(30," ")
+    @width = `tput cols`.to_i
+    @io.clear
+    @io.print "        "+@list_title.ljust(20," ")
+    @io.print "Completed".rjust(33," ")
     puts
 
     length = @todo_list.length
     length = @done_list.length if @done_list.length > @todo_list.length
     length.times do |index|
-      @io.print "#{index+1}. #{@todo_list[index]}".ljust(20," ") unless @todo_list[index].nil?
-      @io.print "#{index+1}. #{@done_list[index]}".rjust(30," ") unless @done_list[index].nil?
+      @io.print "        #{index+1}. #{@todo_list[index]}".ljust(20," ") unless @todo_list[index].nil?
+      @io.print "#{index+1}. #{@done_list[index]}".rjust(40," ") unless @done_list[index].nil?
       puts
     end
     list_menu
