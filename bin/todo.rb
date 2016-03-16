@@ -37,11 +37,11 @@ class MainMenu
       if @file.total_lists == 0
         @io.puts "No lists available"
       else
-        @appliation.list_titles
+        @application.list_titles
       end
     when "C"
 
-    when "X"
+    when "E"
       exit
     else
       input = get_input(Messages::OPTIONS)

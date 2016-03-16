@@ -17,8 +17,11 @@ class ToDoList
       @io.puts "Invalid choice"
       list_titles
     else
-      @todo_list = @file.all_lists_in_file[choice-1]
+      @todo_list = @file.get_todo_at_index(choice.to_i)
+      @list_title = @todo_list.shift
+      @done_list = @file.get_done_at_index(choice.to_i)
       display_todo
+    end
   end
 
   def list_menu(error = nil)
@@ -39,7 +42,7 @@ class ToDoList
       input = get_input(Messages::DELETE)
       delete_item(input)
     elsif option.upcase == "S"
-      @file.write_file(@todo_list, @done_list)
+      @file.write_file(@list_title,@todo_list, @done_list)
       return
     elsif option.upcase == "Q"
       return
@@ -54,11 +57,17 @@ class ToDoList
   end
 
   def display_todo
-    system`clear`
-    title = @todo_list.shift
-    @todo_list.each_with_index do |item, index|
-      @io.print "#{index+1}. #{item}"
-      @io.puts "#{index+1}. #{@done_list[index]}".rjust(20," ")
+    puts`clear`
+    @io.print @list_title.ljust(20," ")
+    @io.print "Completed".rjust(30," ")
+    puts
+
+    length = @todo_list.length
+    length = @done_list.length if @done_list.length > @todo_list.length
+    length.times do |index|
+      @io.print "#{index+1}. #{@todo_list[index]}".ljust(20," ") unless @todo_list[index].nil?
+      @io.print "#{index+1}. #{@done_list[index]}".rjust(30," ") unless @done_list[index].nil?
+      puts
     end
     list_menu
   end
